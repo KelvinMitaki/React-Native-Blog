@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { Context } from "../context/BlogContext";
+import { MaterialIcons } from "@expo/vector-icons";
 
 interface BlogContext {
   state: { blogPosts: { title: string }[] };
@@ -30,7 +31,12 @@ const IndexScreen = () => {
       <FlatList
         data={blogPosts}
         keyExtractor={data => data.title}
-        renderItem={({ item }) => <Text>{item.title}</Text>}
+        renderItem={({ item }) => (
+          <View style={styles.post}>
+            <Text>{item.title}</Text>
+            <MaterialIcons name="delete" size={25} />
+          </View>
+        )}
       />
     </>
   );
@@ -38,4 +44,12 @@ const IndexScreen = () => {
 
 export default IndexScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  post: {
+    height: 40,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: 20
+  }
+});
