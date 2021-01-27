@@ -42,9 +42,13 @@ const addBlogPosts = (dispatch: React.Dispatch<Action>) => {
     });
   };
 };
-
+const removeBlogPost = (dispatch: React.Dispatch<Action>) => {
+  return (title: string) => {
+    dispatch({ type: "removeBlogPost", payload: { title } });
+  };
+};
 export const { Context, Provider } = createDataContext(
   reducer,
-  { addBlogPosts },
+  { addBlogPosts, removeBlogPost },
   { blogPosts: [] }
 );

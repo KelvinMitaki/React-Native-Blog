@@ -7,12 +7,14 @@ import { MaterialIcons } from "@expo/vector-icons";
 interface BlogContext {
   state: { blogPosts: { title: string }[] };
   addBlogPosts: () => void;
+  removeBlogPost: (title: string) => void;
 }
 
 const IndexScreen = () => {
   const {
     state: { blogPosts },
-    addBlogPosts
+    addBlogPosts,
+    removeBlogPost
   } = useContext(Context) as BlogContext;
   return (
     <>
@@ -34,7 +36,11 @@ const IndexScreen = () => {
         renderItem={({ item }) => (
           <View style={styles.post}>
             <Text>{item.title}</Text>
-            <MaterialIcons name="delete" size={25} />
+            <MaterialIcons
+              name="delete"
+              size={25}
+              onPress={() => removeBlogPost(item.title)}
+            />
           </View>
         )}
       />
