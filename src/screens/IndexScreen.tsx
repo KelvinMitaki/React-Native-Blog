@@ -1,16 +1,18 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
-import BlogContext from "../context/BlogContext";
+import { Context } from "../context/BlogContext";
 
 interface BlogContext {
-  blogPosts: { title: string }[];
+  state: { blogPosts: { title: string }[] };
   addBlogPosts: () => void;
 }
 
 const IndexScreen = () => {
-  const { blogPosts, addBlogPosts } = useContext(BlogContext) as BlogContext;
-
+  const {
+    state: { blogPosts },
+    addBlogPosts
+  } = useContext(Context) as BlogContext;
   return (
     <>
       <TouchableOpacity

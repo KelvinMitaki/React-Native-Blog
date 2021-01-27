@@ -1,12 +1,12 @@
-import React, { useReducer, useState } from "react";
-const BlogContext = React.createContext({});
+import React from "react";
+import createDataContext from "./createDataContext";
 
 interface State {
   blogPosts: { title: string }[];
 }
 
 interface Action {
-  type: "addBlogPosts";
+  type: "addBlogPosts" | "removeBlogPost";
   payload: { title: string };
 }
 
@@ -15,28 +15,36 @@ type UseReducer = (state: State, action: Action) => State;
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "addBlogPosts":
-      return { ...state, blogPosts: [...state.blogPosts, action.payload] };
+      return {
+        ...state,
+        blogPosts: [
+          ...state.blogPosts,
+          { title: `Blog Post #${state.blogPosts.length + 1}` }
+        ]
+      };
+    case "removeBlogPost":
+      return {
+        ...state,
+        blogPosts: state.blogPosts.filter(
+          bp => bp.title !== action.payload.title
+        )
+      };
     default:
       return state;
   }
 };
 
-export const BlogProvider: React.FC = ({ children }) => {
-  const [{ blogPosts }, dispatch] = useReducer<UseReducer>(reducer, {
-    blogPosts: []
-  });
-
-  const addBlogPosts = () => {
+const addBlogPosts = (dispatch: React.Dispatch<Action>) => {
+  return () => {
     dispatch({
       type: "addBlogPosts",
-      payload: { title: `Blog Post #${blogPosts.length + 1}` }
+      payload: { title: `Blog Post #1` }
     });
   };
-  return (
-    <BlogContext.Provider value={{ blogPosts, addBlogPosts }}>
-      {children}
-    </BlogContext.Provider>
-  );
 };
 
-export default BlogContext;
+export const { Context, Provider } = createDataContext(
+  reducer,
+  { addBlogPosts },
+  { blogPosts: [] }
+);
