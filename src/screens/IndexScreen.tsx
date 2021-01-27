@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import BlogContext from "../context/BlogContext";
 
 interface BlogContext {
@@ -9,17 +9,28 @@ interface BlogContext {
 }
 
 const IndexScreen = () => {
-  const data = useContext(BlogContext) as BlogContext;
+  const { blogPosts, addBlogPosts } = useContext(BlogContext) as BlogContext;
 
   return (
-    <View>
-      <Text>IndexScreen IndexScreen</Text>
+    <>
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#00a2ff",
+          height: 50,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+        onPress={() => addBlogPosts()}
+      >
+        <Text style={{ color: "white" }}>Add blog post</Text>
+      </TouchableOpacity>
       <FlatList
-        data={data.blogPosts}
+        data={blogPosts}
         keyExtractor={data => data.title}
         renderItem={({ item }) => <Text>{item.title}</Text>}
       />
-    </View>
+    </>
   );
 };
 
