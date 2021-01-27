@@ -19,7 +19,17 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         blogPosts: [
           ...state.blogPosts,
-          { title: `Blog Post #${state.blogPosts.length + 1}` }
+          {
+            title: state.blogPosts[state.blogPosts.length - 1]
+              ? `Blog Post # ${
+                  parseInt(
+                    state.blogPosts[state.blogPosts.length - 1].title.split(
+                      "#"
+                    )[1]
+                  ) + 1
+                }`
+              : `Blog Post #${state.blogPosts.length + 1}`
+          }
         ]
       };
     case "removeBlogPost":
