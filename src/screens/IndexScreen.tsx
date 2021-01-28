@@ -9,9 +9,9 @@ import {
 } from "react-navigation-stack";
 
 export interface BlogContext {
-  state: { blogPosts: { title: string }[] };
+  state: { blogPosts: { title: string; id: number; content: string }[] };
   addBlogPosts: () => void;
-  removeBlogPost: (title: string) => void;
+  removeBlogPost: (id: number) => void;
 }
 
 const IndexScreen: NavigationStackScreenComponent = props => {
@@ -36,16 +36,14 @@ const IndexScreen: NavigationStackScreenComponent = props => {
       </TouchableOpacity>
       <FlatList
         data={blogPosts}
-        keyExtractor={data => data.title}
+        keyExtractor={data => data.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.post}
-            onPress={() =>
-              props.navigation.navigate("Show", { title: item.title })
-            }
+            onPress={() => props.navigation.navigate("Show", { id: item.id })}
           >
             <Text>{item.title}</Text>
-            <TouchableOpacity onPress={() => removeBlogPost(item.title)}>
+            <TouchableOpacity onPress={() => removeBlogPost(item.id)}>
               <MaterialIcons name="delete" size={25} />
             </TouchableOpacity>
           </TouchableOpacity>

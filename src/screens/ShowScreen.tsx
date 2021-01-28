@@ -6,11 +6,11 @@ import { Context } from "../context/BlogContext";
 import { BlogContext } from "./IndexScreen";
 
 const ShowScreen: React.FC<{
-  navigation: StackNavigationProp<NavigationRoute, { title: string }>;
+  navigation: StackNavigationProp<NavigationRoute, { id: number }>;
 }> = props => {
   const { state } = useContext(Context) as BlogContext;
   const blogPost = state.blogPosts.find(
-    blog => blog.title === props.navigation.getParam("title")
+    blog => blog.id === props.navigation.getParam("id")
   );
   return (
     <View>

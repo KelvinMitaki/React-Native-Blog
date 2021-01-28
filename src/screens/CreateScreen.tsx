@@ -32,13 +32,17 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: "bold",
-    marginHorizontal: 20
+    marginHorizontal: 20,
+    marginTop: 10
   },
   input: {
     borderWidth: 1,
     borderColor: "black",
     marginHorizontal: 20,
-    height: 50
+    paddingTop: 15,
+    paddingBottom: 2,
+    marginTop: 10,
+    fontSize: 18
   },
   submit: {
     backgroundColor: "#00a2ff",
