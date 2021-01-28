@@ -1,4 +1,5 @@
 import React from "react";
+import { NavigationRoute, NavigationScreenProp } from "react-navigation";
 import createDataContext from "./createDataContext";
 
 interface State {
@@ -41,12 +42,24 @@ const reducer = (state: State, action: Action): State => {
 };
 
 const addBlogPost = (dispatch: React.Dispatch<Action>) => {
-  return (data: { title: string; content: string }) => {
+  return (data: {
+    title: string;
+    content: string;
+    navigation: NavigationScreenProp<
+      NavigationRoute<{
+        id: number;
+      }>,
+      {
+        id: number;
+      }
+    >;
+  }) => {
     const { title, content } = data;
     dispatch({
       type: "addBlogPost",
       payload: { title, content, id: Math.floor(Math.random() * 91826982718) }
     });
+    data.navigation.navigate("Index");
   };
 };
 const removeBlogPost = (dispatch: React.Dispatch<Action>) => {
@@ -55,8 +68,21 @@ const removeBlogPost = (dispatch: React.Dispatch<Action>) => {
   };
 };
 const editBlogPost = (dispatch: React.Dispatch<Action>) => {
-  return (data: { title: string; content: string; id: number }) => {
+  return (data: {
+    title: string;
+    content: string;
+    id: number;
+    navigation: NavigationScreenProp<
+      NavigationRoute<{
+        id: number;
+      }>,
+      {
+        id: number;
+      }
+    >;
+  }) => {
     dispatch({ type: "editBlogPost", payload: data });
+    data.navigation.goBack();
   };
 };
 export const { Context, Provider } = createDataContext(

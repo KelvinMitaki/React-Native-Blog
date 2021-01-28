@@ -1,7 +1,12 @@
 import React, { useContext, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { NavigationInjectedProps, withNavigation } from "react-navigation";
+import {
+  NavigationInjectedProps,
+  NavigationRoute,
+  NavigationScreenProp,
+  withNavigation
+} from "react-navigation";
 
 interface Props {
   titleLabel: string;
@@ -9,11 +14,30 @@ interface Props {
   btnLabel: string;
   title?: string;
   content?: string;
-  onSubmit?: (values: { title: string; content: string }) => void;
+  onSubmit?: (values: {
+    title: string;
+    content: string;
+    navigation: NavigationScreenProp<
+      NavigationRoute<{
+        id: number;
+      }>,
+      {
+        id: number;
+      }
+    >;
+  }) => void;
   onEditSubmit?: (values: {
     title: string;
     content: string;
     id: number;
+    navigation: NavigationScreenProp<
+      NavigationRoute<{
+        id: number;
+      }>,
+      {
+        id: number;
+      }
+    >;
   }) => void;
 }
 
@@ -41,16 +65,16 @@ const BlogPostForm: React.FC<
             props.navigation
           ) {
             if (props.onSubmit) {
-              props.onSubmit({ title, content });
+              props.onSubmit({ title, content, navigation: props.navigation });
             }
             if (props.onEditSubmit) {
               props.onEditSubmit({
                 title,
                 content,
-                id: props.navigation.getParam("id")
+                id: props.navigation.getParam("id"),
+                navigation: props.navigation
               });
             }
-            props.navigation.navigate("Index");
           }
         }}
       >

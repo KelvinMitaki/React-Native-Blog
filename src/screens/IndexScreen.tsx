@@ -7,11 +7,35 @@ import {
   NavigationStackScreenComponent,
   NavigationStackScreenProps
 } from "react-navigation-stack";
+import { NavigationRoute, NavigationScreenProp } from "react-navigation";
 
 export interface BlogContext {
   state: { blogPosts: { title: string; id: number; content: string }[] };
-  addBlogPost: (data: { title: string; content: string }) => void;
-  editBlogPost: (data: { title: string; content: string; id: number }) => void;
+  addBlogPost: (data: {
+    title: string;
+    content: string;
+    navigation: NavigationScreenProp<
+      NavigationRoute<{
+        id: number;
+      }>,
+      {
+        id: number;
+      }
+    >;
+  }) => void;
+  editBlogPost: (data: {
+    title: string;
+    content: string;
+    id: number;
+    navigation: NavigationScreenProp<
+      NavigationRoute<{
+        id: number;
+      }>,
+      {
+        id: number;
+      }
+    >;
+  }) => void;
   removeBlogPost: (id: number) => void;
 }
 
