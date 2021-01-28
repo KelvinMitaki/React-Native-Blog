@@ -49,5 +49,9 @@ const removeBlogPost = (dispatch: React.Dispatch<Action>) => {
 export const { Context, Provider } = createDataContext(
   reducer,
   { addBlogPost, removeBlogPost },
-  { blogPosts: [] }
+  {
+    blogPosts: [
+      { title: "Test Post", content: "This is the first test post", id: 1 }
+    ]
+  }
 );
