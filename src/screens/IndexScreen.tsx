@@ -10,30 +10,17 @@ import {
 
 export interface BlogContext {
   state: { blogPosts: { title: string; id: number; content: string }[] };
-  addBlogPosts: () => void;
+  addBlogPost: (data: { title: string; content: string }) => void;
   removeBlogPost: (id: number) => void;
 }
 
 const IndexScreen: NavigationStackScreenComponent = props => {
   const {
     state: { blogPosts },
-    addBlogPosts,
     removeBlogPost
   } = useContext(Context) as BlogContext;
   return (
     <>
-      <TouchableOpacity
-        style={{
-          backgroundColor: "#00a2ff",
-          height: 50,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
-        onPress={() => addBlogPosts()}
-      >
-        <Text style={{ color: "white" }}>Add blog post</Text>
-      </TouchableOpacity>
       <FlatList
         data={blogPosts}
         keyExtractor={data => data.id.toString()}

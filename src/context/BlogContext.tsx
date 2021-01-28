@@ -6,7 +6,7 @@ interface State {
 }
 
 interface Action {
-  type: "addBlogPosts" | "removeBlogPost";
+  type: "addBlogPost" | "removeBlogPost";
   payload: { title?: string; id?: number; content?: string };
 }
 
@@ -14,7 +14,7 @@ type UseReducer = (state: State, action: Action) => State;
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "addBlogPosts":
+    case "addBlogPost":
       return {
         ...state,
         blogPosts: [
@@ -32,11 +32,11 @@ const reducer = (state: State, action: Action): State => {
   }
 };
 
-const addBlogPosts = (dispatch: React.Dispatch<Action>) => {
+const addBlogPost = (dispatch: React.Dispatch<Action>) => {
   return (data: { title: string; content: string }) => {
     const { title, content } = data;
     dispatch({
-      type: "addBlogPosts",
+      type: "addBlogPost",
       payload: { title, content, id: Math.floor(Math.random() * 91826982718) }
     });
   };
@@ -48,6 +48,6 @@ const removeBlogPost = (dispatch: React.Dispatch<Action>) => {
 };
 export const { Context, Provider } = createDataContext(
   reducer,
-  { addBlogPosts, removeBlogPost },
+  { addBlogPost, removeBlogPost },
   { blogPosts: [] }
 );
