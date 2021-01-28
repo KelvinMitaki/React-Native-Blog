@@ -8,7 +8,7 @@ import {
   NavigationStackScreenProps
 } from "react-navigation-stack";
 import { NavigationRoute, NavigationScreenProp } from "react-navigation";
-import axios from "axios";
+import axios from "../axios/axios";
 
 export interface BlogContext {
   state: { blogPosts: { title: string; id: number; content: string }[] };
@@ -38,29 +38,17 @@ export interface BlogContext {
     >;
   }) => void;
   removeBlogPost: (id: number) => void;
+  fetchPosts: () => void;
 }
 
 const IndexScreen: NavigationStackScreenComponent = props => {
   const {
     state: { blogPosts },
-    removeBlogPost
+    removeBlogPost,
+    fetchPosts
   } = useContext(Context) as BlogContext;
   useEffect(() => {
-    const add = async () => {
-      try {
-        const { data } = await axios.get(
-          "https://jsonplaceholder.typicode.com/todos/1"
-          // {
-          //   title: "first blog",
-          //   content: "This is the first blog in json server"
-          // }
-        );
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    add();
+    fetchPosts();
   }, []);
   return (
     <>

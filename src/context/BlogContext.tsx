@@ -1,5 +1,6 @@
 import React from "react";
 import { NavigationRoute, NavigationScreenProp } from "react-navigation";
+import axios from "../axios/axios";
 import createDataContext from "./createDataContext";
 
 interface State {
@@ -7,7 +8,7 @@ interface State {
 }
 
 interface Action {
-  type: "addBlogPost" | "removeBlogPost" | "editBlogPost";
+  type: "addBlogPost" | "removeBlogPost" | "editBlogPost" | "fetchPosts";
   payload: { title?: string; id?: number; content?: string };
 }
 
@@ -15,6 +16,8 @@ type UseReducer = (state: State, action: Action) => State;
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
+    case "fetchPosts":
+      return { ...state, blogPosts: action.payload as typeof state.blogPosts };
     case "addBlogPost":
       return {
         ...state,
@@ -67,6 +70,12 @@ const removeBlogPost = (dispatch: React.Dispatch<Action>) => {
     dispatch({ type: "removeBlogPost", payload: { id } });
   };
 };
+const fetchPosts = (dispatch: React.Dispatch<Action>) => {
+  return async () => {
+    const { data } = await axios.get("/blogPosts");
+    dispatch({ type: "fetchPosts", payload: data });
+  };
+};
 const editBlogPost = (dispatch: React.Dispatch<Action>) => {
   return (data: {
     title: string;
@@ -87,10 +96,8 @@ const editBlogPost = (dispatch: React.Dispatch<Action>) => {
 };
 export const { Context, Provider } = createDataContext(
   reducer,
-  { addBlogPost, removeBlogPost, editBlogPost },
+  { addBlogPost, removeBlogPost, editBlogPost, fetchPosts },
   {
-    blogPosts: [
-      { title: "Test Post", content: "This is the first test post", id: 1 }
-    ]
+    blogPosts: []
   }
 );
