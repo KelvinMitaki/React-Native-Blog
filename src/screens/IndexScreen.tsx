@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { Context } from "../context/BlogContext";
@@ -8,6 +8,7 @@ import {
   NavigationStackScreenProps
 } from "react-navigation-stack";
 import { NavigationRoute, NavigationScreenProp } from "react-navigation";
+import axios from "axios";
 
 export interface BlogContext {
   state: { blogPosts: { title: string; id: number; content: string }[] };
@@ -44,6 +45,23 @@ const IndexScreen: NavigationStackScreenComponent = props => {
     state: { blogPosts },
     removeBlogPost
   } = useContext(Context) as BlogContext;
+  useEffect(() => {
+    const add = async () => {
+      try {
+        const { data } = await axios.get(
+          "https://jsonplaceholder.typicode.com/todos/1"
+          // {
+          //   title: "first blog",
+          //   content: "This is the first blog in json server"
+          // }
+        );
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    add();
+  }, []);
   return (
     <>
       <FlatList
