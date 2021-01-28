@@ -6,7 +6,7 @@ interface State {
 }
 
 interface Action {
-  type: "addBlogPost" | "removeBlogPost";
+  type: "addBlogPost" | "removeBlogPost" | "editBlogPost";
   payload: { title?: string; id?: number; content?: string };
 }
 
@@ -27,6 +27,14 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         blogPosts: state.blogPosts.filter(bp => bp.id !== action.payload.id)
       };
+    case "editBlogPost":
+      const blogPosts = state.blogPosts;
+      const postIndex = blogPosts.findIndex(p => p.id === action.payload.id);
+      blogPosts[postIndex] = action.payload as typeof state.blogPosts[0];
+      return {
+        ...state,
+        blogPosts
+      };
     default:
       return state;
   }
@@ -46,9 +54,14 @@ const removeBlogPost = (dispatch: React.Dispatch<Action>) => {
     dispatch({ type: "removeBlogPost", payload: { id } });
   };
 };
+const editBlogPost = (dispatch: React.Dispatch<Action>) => {
+  return (data: { title: string; content: string; id: number }) => {
+    dispatch({ type: "editBlogPost", payload: data });
+  };
+};
 export const { Context, Provider } = createDataContext(
   reducer,
-  { addBlogPost, removeBlogPost },
+  { addBlogPost, removeBlogPost, editBlogPost },
   {
     blogPosts: [
       { title: "Test Post", content: "This is the first test post", id: 1 }

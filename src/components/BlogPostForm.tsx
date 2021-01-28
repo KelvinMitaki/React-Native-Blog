@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { NavigationInjectedProps, withNavigation } from "react-navigation";
 
 interface Props {
   titleLabel: string;
@@ -8,9 +9,17 @@ interface Props {
   btnLabel: string;
   title?: string;
   content?: string;
+  onSubmit?: (values: { title: string; content: string }) => void;
+  onEditSubmit?: (values: {
+    title: string;
+    content: string;
+    id: number;
+  }) => void;
 }
 
-const BlogPostForm: React.FC<Props> = props => {
+const BlogPostForm: React.FC<
+  NavigationInjectedProps<{ id: number }> & Props
+> = props => {
   const [title, setTitle] = useState<string>(props.title || "");
   const [content, setContent] = useState<string>(props.content || "");
   return (
@@ -23,14 +32,35 @@ const BlogPostForm: React.FC<Props> = props => {
         onChangeText={setContent}
         value={content}
       />
-      <TouchableOpacity style={styles.submit}>
+      <TouchableOpacity
+        style={styles.submit}
+        onPress={() => {
+          if (
+            title.trim().length !== 0 &&
+            content.trim().length !== 0 &&
+            props.navigation
+          ) {
+            if (props.onSubmit) {
+              props.onSubmit({ title, content });
+            }
+            if (props.onEditSubmit) {
+              props.onEditSubmit({
+                title,
+                content,
+                id: props.navigation.getParam("id")
+              });
+            }
+            props.navigation.navigate("Index");
+          }
+        }}
+      >
         <Text style={{ color: "white" }}>{props.btnLabel}</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default BlogPostForm;
+export default withNavigation(BlogPostForm);
 
 const styles = StyleSheet.create({
   text: {

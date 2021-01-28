@@ -7,7 +7,7 @@ import { BlogContext } from "./IndexScreen";
 import BlogPostForm from "../components/BlogPostForm";
 
 const EditScreen: NavigationStackScreenComponent<{ id?: number }> = props => {
-  const { state } = useContext(Context) as BlogContext;
+  const { state, editBlogPost } = useContext(Context) as BlogContext;
   const blog = state.blogPosts.find(
     pb => pb.id === props.navigation.getParam("id")
   );
@@ -20,6 +20,7 @@ const EditScreen: NavigationStackScreenComponent<{ id?: number }> = props => {
         btnLabel="Edit Blog"
         title={title}
         content={content}
+        onEditSubmit={editBlogPost}
       />
     </View>
   );

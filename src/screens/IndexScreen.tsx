@@ -11,6 +11,7 @@ import {
 export interface BlogContext {
   state: { blogPosts: { title: string; id: number; content: string }[] };
   addBlogPost: (data: { title: string; content: string }) => void;
+  editBlogPost: (data: { title: string; content: string; id: number }) => void;
   removeBlogPost: (id: number) => void;
 }
 
