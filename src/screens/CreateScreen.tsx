@@ -26,8 +26,10 @@ const CreateScreen: NavigationStackScreenComponent = props => {
       <TouchableOpacity
         style={styles.submit}
         onPress={() => {
-          addBlogPost({ title, content });
-          props.navigation.navigate("Index");
+          if (title.trim().length !== 0 && content.trim().length !== 0) {
+            addBlogPost({ title, content });
+            props.navigation.navigate("Index");
+          }
         }}
       >
         <Text style={{ color: "white" }}>Submit</Text>
