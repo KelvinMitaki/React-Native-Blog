@@ -45,7 +45,7 @@ const reducer = (state: State, action: Action): State => {
 };
 
 const addBlogPost = (dispatch: React.Dispatch<Action>) => {
-  return (data: {
+  return async (data: {
     title: string;
     content: string;
     navigation: NavigationScreenProp<
@@ -57,27 +57,41 @@ const addBlogPost = (dispatch: React.Dispatch<Action>) => {
       }
     >;
   }) => {
-    const { title, content } = data;
-    dispatch({
-      type: "addBlogPost",
-      payload: { title, content, id: Math.floor(Math.random() * 91826982718) }
-    });
-    data.navigation.navigate("Index");
+    try {
+      const { title, content } = data;
+      const res = await axios.post("/blogPosts", { title, content });
+      dispatch({
+        type: "addBlogPost",
+        payload: res.data
+      });
+      data.navigation.navigate("Index");
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 const removeBlogPost = (dispatch: React.Dispatch<Action>) => {
-  return (id: number) => {
-    dispatch({ type: "removeBlogPost", payload: { id } });
+  return async (id: number) => {
+    try {
+      await axios.delete(`/blogPosts/${id}`);
+      dispatch({ type: "removeBlogPost", payload: { id } });
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 const fetchPosts = (dispatch: React.Dispatch<Action>) => {
   return async () => {
-    const { data } = await axios.get("/blogPosts");
-    dispatch({ type: "fetchPosts", payload: data });
+    try {
+      const { data } = await axios.get("/blogPosts");
+      dispatch({ type: "fetchPosts", payload: data });
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 const editBlogPost = (dispatch: React.Dispatch<Action>) => {
-  return (data: {
+  return async (data: {
     title: string;
     content: string;
     id: number;
@@ -90,8 +104,14 @@ const editBlogPost = (dispatch: React.Dispatch<Action>) => {
       }
     >;
   }) => {
-    dispatch({ type: "editBlogPost", payload: data });
-    data.navigation.goBack();
+    try {
+      const { content, title } = data;
+      const res = await axios.put(`/blogPosts/${data.id}`, { content, title });
+      dispatch({ type: "editBlogPost", payload: res.data });
+      data.navigation.goBack();
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 export const { Context, Provider } = createDataContext(
