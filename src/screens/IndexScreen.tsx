@@ -55,10 +55,13 @@ const IndexScreen: NavigationStackScreenComponent = props => {
   );
 };
 
-IndexScreen.navigationOptions = () => {
+IndexScreen.navigationOptions = ({ navigation }) => {
   return {
     headerRight: () => (
-      <TouchableOpacity style={{ marginRight: 20 }}>
+      <TouchableOpacity
+        style={{ marginRight: 20 }}
+        onPress={() => navigation.navigate("Create")}
+      >
         <AntDesign name="pluscircle" size={25} />
       </TouchableOpacity>
     )
